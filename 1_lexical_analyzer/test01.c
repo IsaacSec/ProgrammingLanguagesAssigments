@@ -2,6 +2,8 @@
 
 {
     int i;
+    float j;
+    int k;
     /*
      *
      * A multi-line comment!
