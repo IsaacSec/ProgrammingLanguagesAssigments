@@ -18,6 +18,7 @@
     int arloop;
     int numbers;
     int ids;
+    int commts;
 
     int nlines;
     //int nline; //\n          { nline++;}
@@ -30,6 +31,7 @@
 "int"|"float"                   { reword++; }
 "if"|"then"|"else"|"while"      { reword++; }
 "read"|"write"                  { reword++; }
+"/*"((\*+[^/*])|([^*]))*\**"*/" { commts++; }
 ":="                            { assop++;  }
 ","|";"|"("|")"|"{"|"}"         { puntok++; }
 "<"|"="|"<="|">="|"!="          { reltok++; }
@@ -61,6 +63,7 @@ int main(void) {
     printf("[Assigment Operation] %d\n",assop);
     printf("[Numbers] %d\n",numbers);
     printf("[Identifiers] %d\n",ids);
-    
+    printf("[Comments] %d\n",commts);
+
     return 0;
 }
