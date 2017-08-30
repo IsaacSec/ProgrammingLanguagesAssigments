@@ -6,10 +6,10 @@
     int k;
     /*
      *
-     * A multi-line comment!
+     * A multi-line comment!!!
      */
 
-    i := 0;
+    i := 0.0;
     while(i < N)
         i++;
 }
