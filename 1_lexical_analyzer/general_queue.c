@@ -5,6 +5,7 @@ queue * createQueue() {
     q->size = 0;
     q->head = NULL;
     q->tail = NULL;
+    return q;
 }
 
 void deleteQueue (queue * q) {
@@ -42,7 +43,7 @@ node * dequeue (queue * q) {
 
     node * tail = q->tail;
     node * current = q->head;
-    node * prev = NULL;
+    //node * prev = NULL;
 
     while (current != tail && current != NULL) {
         if (current->next == tail) {
