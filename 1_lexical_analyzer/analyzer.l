@@ -1,5 +1,7 @@
 /* This is the declaration section */
 %{
+    #include "general_queue.h"
+
     /*  --- Variable meaning ---
     *   reword:  Reserved words
     *   puntok:  Punctuation Tokens
@@ -23,7 +25,7 @@
     int nlines;
     //int nline; //\n          { nline++;}
 
-    
+    queue * token_queue;
 %}
 
 /* This is the rule definition */
@@ -44,6 +46,9 @@
 /* This is the main program */
 
 int main(void) {
+
+    token_queue = createQueue(); 
+
     printf("\n");
     printf("\t +--------------------------------------+\n");
     printf("\t | Lexical analyzer by Martin and Isaac |\n");

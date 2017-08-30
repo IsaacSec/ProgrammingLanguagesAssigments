@@ -50,6 +50,7 @@ node * dequeue (queue * q) {
             q->tail = current;
             return tail;
         }
+        q->size--;
         current = current->next;
     }
 
@@ -74,6 +75,7 @@ void printString (node * n){
     printf("%s\n",n->data);
 }
 
+/*
 int main() {
     char * one = "One";
     char * two = "Two";
@@ -91,3 +93,4 @@ int main() {
     deleteQueue(q);
     return EXIT_SUCCESS;
 }
+*/
