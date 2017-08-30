@@ -1,6 +1,16 @@
 /* This is the declaration section */
 %{
+    #include <string.h>
     #include "general_queue.h"
+
+    char * RESERVED_WORD = "Reserved Word";
+    char * COMMENT = "Comment";
+    char * ASSIGMENT_OPERATION = "Assigment Operation";
+    char * PUNCTUATION_TOKEN = "Punctuation Token";
+    char * RELATIONAL_TOKEN = "Relational Token";
+    char * ARITHMETIC_AND_LOGIC = "Arithmetic/Logic Operator";
+    char * NUMBER = "Number";
+    char * ID = "Identificator";
 
     /*  --- Variable meaning ---
     *   reword:  Reserved words
@@ -26,20 +36,37 @@
     //int nline; //\n          { nline++;}
 
     queue * token_queue;
+
+    void printToken (node * tokenNode) {
+        token * t = (token*) tokenNode->data;
+        printf("[%s]->%s\n",t->type, t->value);
+    }
+
+    char * getSubstring(const char * src, int length) {
+        char * cpy = (char*) malloc(length + 1);
+        strncpy(cpy, src, length+1);
+        return cpy;
+    }
+
+    void reFound(int * acum, char * key) {
+        (*acum)++; 
+        token * t = createToken(key, getSubstring(yytext,yyleng)); 
+        enqueue(token_queue, t);
+    }
 %}
 
 /* This is the rule definition */
 %%
-"int"|"float"                   { reword++; }
-"if"|"then"|"else"|"while"      { reword++; }
-"read"|"write"                  { reword++; }
-"/*"((\*+[^/*])|([^*]))*\**"*/" { commts++; }
-":="                            { assop++;  }
-","|";"|"("|")"|"{"|"}"         { puntok++; }
-"<"|"="|"<="|">="|"!="          { reltok++; }
-"+"|"-"|"*"|"/"                 { arloop++; }
-[1-9][0-9]*|0(c|C)[0-7]+|0(x|X)[0-9A-Fa-f]+|[+-]?[0-9]*"."[0-9]+([eE][-+]?[0-9]+)?  { numbers++; }
-[A-Za-z_][A-Za-z0-9_]*          { ids++;    }
+"int"|"float"                   { reFound(&reword, RESERVED_WORD); }
+"if"|"then"|"else"|"while"      { reFound(&reword, RESERVED_WORD); }
+"read"|"write"                  { reFound(&reword, RESERVED_WORD); }
+"/*"((\*+[^/*])|([^*]))*\**"*/" { reFound(&commts, COMMENT); }
+":="                            { reFound(&assop, ASSIGMENT_OPERATION); }
+","|";"|"("|")"|"{"|"}"         { reFound(&puntok, PUNCTUATION_TOKEN);puntok++; }
+"<"|"="|"<="|">="|"!="          { reFound(&reltok, RELATIONAL_TOKEN);reltok++; }
+"+"|"-"|"*"|"/"                 { reFound(&arloop, ARITHMETIC_AND_LOGIC);arloop++; }
+[1-9][0-9]*|0(c|C)[0-7]+|0(x|X)[0-9A-Fa-f]+|[+-]?[0-9]*"."[0-9]+([eE][-+]?[0-9]+)?  { reFound(&numbers, NUMBER); }
+[A-Za-z_][A-Za-z0-9_]*          { reFound(&ids, ID); }
 "\n"                            { nlines++; }
 %%
 
@@ -69,6 +96,9 @@ int main(void) {
     printf("[Numbers] %d\n",numbers);
     printf("[Identifiers] %d\n",ids);
     printf("[Comments] %d\n",commts);
+
+    printf("\n\n");
+    printQueue(token_queue, printToken);
 
     return 0;
 }
