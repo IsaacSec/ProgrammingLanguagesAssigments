@@ -72,7 +72,8 @@ void printQueue (queue * q, void (*f) (node*)) {
 
 // Special print
 void printString (node * n){
-    printf("%s\n",n->data);
+    char * token_val = (char * ) n;
+    printf("%s\n",token_val);
 }
 
 /*
