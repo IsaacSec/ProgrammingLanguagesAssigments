@@ -60,11 +60,11 @@ node * dequeue (queue * q) {
 
 void printQueue (queue * q, void (*f) (node*)) {
     node * temp = q->head;
-    printf("HEAD-> ");
+    /*printf("HEAD-> ");
     f(q->head);
     printf("TAIL-> ");
     f(q->tail);
-
+    */
     while(temp != NULL) {
         f(temp);
         temp = temp->next;
