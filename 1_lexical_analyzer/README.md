@@ -1,21 +1,21 @@
 ## Lexical Analyzer for tinyC
 
 
-# Compile
+### Compile
 
 ```
 make
 ```
 
-# Compile & Run
+### Compile & Run
 
 ```
 make run
 ```
 
-# Run
+### Run
 
 ```
 ./analyzer.o < test01.c
 ```
-note: you can change test01.c with any c source file that you want to test
+**note:** you can change test01.c with any c source file that you want to test
