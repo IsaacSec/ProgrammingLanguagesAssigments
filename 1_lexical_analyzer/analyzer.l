@@ -138,5 +138,8 @@ int main(void) {
     printf("[ %3d ] Errors found\n\n",errorlex);
     printQueue(error_queue, printError);
 
+    deleteQueue(error_queue);
+    deleteQueue(token_queue);
+
     return 0;
 }
