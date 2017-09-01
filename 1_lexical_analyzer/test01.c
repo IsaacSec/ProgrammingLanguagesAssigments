@@ -9,7 +9,8 @@
      * A multi-line comment!!!
      */
 
-    i := 0.0;
+    i := -2.25;
+    error here ^!°
     while(i < N)
         i++;
 }

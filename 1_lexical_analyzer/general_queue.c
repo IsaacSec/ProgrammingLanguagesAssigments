@@ -5,6 +5,7 @@ queue * createQueue() {
     q->size = 0;
     q->head = NULL;
     q->tail = NULL;
+    return q;
 }
 
 void deleteQueue (queue * q) {
@@ -42,7 +43,7 @@ node * dequeue (queue * q) {
 
     node * tail = q->tail;
     node * current = q->head;
-    node * prev = NULL;
+    //node * prev = NULL;
 
     while (current != tail && current != NULL) {
         if (current->next == tail) {
@@ -59,11 +60,11 @@ node * dequeue (queue * q) {
 
 void printQueue (queue * q, void (*f) (node*)) {
     node * temp = q->head;
-    printf("HEAD-> ");
+    /*printf("HEAD-> ");
     f(q->head);
     printf("TAIL-> ");
     f(q->tail);
-
+    */
     while(temp != NULL) {
         f(temp);
         temp = temp->next;
@@ -72,7 +73,8 @@ void printQueue (queue * q, void (*f) (node*)) {
 
 // Special print
 void printString (node * n){
-    printf("%s\n",n->data);
+    char * token_val = (char * ) n;
+    printf("%s\n",token_val);
 }
 
 /*
