@@ -1,15 +1,17 @@
 %{
-#include <string.h>
-#include <stdio.h>
+    #include <string.h>
+    #include <stdio.h>
 
-  /* Function definitions */
-void yyerror (char *string);
+    /* Function definitions */
+    void yyerror (char *string);
 %}
 
  /* NAME is used for identifier tokens */
  /* NUMBER is used or real numbers */
-%token NAME
+
+
 %token NUMBER
+%token NAME
 
 %%
 statement_list: statement '\n'       { printf ("No errors in the line\n");}
@@ -35,7 +37,8 @@ factor:  '(' expression ')'
     ;
 %%
 
-#include "lex.yy.c"
+//#include "lex.yy.c"
+
 
 /* Bison does NOT implement yyerror, so define it here */
 void yyerror (char *string){
@@ -43,6 +46,7 @@ void yyerror (char *string){
 }
 
 /* Bison does NOT define the main entry point so define it here */
-main (){
+int main (){
   yyparse();
+  return 0;
 }

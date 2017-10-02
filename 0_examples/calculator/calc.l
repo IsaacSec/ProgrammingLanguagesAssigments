@@ -1,5 +1,7 @@
 %{
+	#include "calc_grammar.tab.h"
 %}
+
 
 %%
 [0-9]+ |
@@ -20,3 +22,4 @@
 	                                        }
 \n |
 .	                                        return yytext[0];
+%%

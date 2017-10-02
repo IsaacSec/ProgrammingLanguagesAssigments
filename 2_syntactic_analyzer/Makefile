@@ -1,9 +1,10 @@
-analyzer.o: lex.yy.c
-	gcc lex.yy.c -o lexical.o -lfl -Wall
-lex.yy.c: lexical.l
+analyzer.o: lex.yy.c syntactic.tab.c
+	gcc syntactic.tab.c lex.yy.c -o analyzer.o -lfl -Wall -DGRAMMAR
+lex.yy.c: lexical.l syntactic.tab.c
 	flex lexical.l
-run: lexical.o test01.c
-	reset
-	./lexical.o < test01.c
+syntactic.tab.c: syntactic.y 
+	bison -d syntactic.y
+run: analyzer.o test01.c
+	./analyzer.o < test01.c
 clean:
-	rm *.o lex*.c
+	rm *.o lex*.c syntactic.tab.*

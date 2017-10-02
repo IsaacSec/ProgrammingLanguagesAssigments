@@ -1,6 +1,7 @@
 /* This is the declaration section */
 %{
     #include <string.h>
+    #include "syntactic.tab.h"
 
     char * RESERVED_WORD = "Reserved Word";
     char * COMMENT = "Comment";
@@ -9,7 +10,7 @@
     char * RELATIONAL_TOKEN = "Relational Token";
     char * ARITHMETIC_AND_LOGIC = "Arithmetic/Logic Operator";
     char * NUMBER = "Number";
-    char * ID = "Identifier";
+    char * id = "Identifier";
 
     /*  --- Variable meaning ---
     *   reword:  Reserved words
@@ -73,28 +74,98 @@
         }
         return lines;
     }
+
 %}
 
 /* This is the rule definition */
 %%
 \n                              { nlines++; }
-"int"|"float"                   { reFound(&reword, RESERVED_WORD); }
-"if"|"then"|"else"|"while"      { reFound(&reword, RESERVED_WORD); }
-"read"|"write"                  { reFound(&reword, RESERVED_WORD); }
-"/*"((\*+[^/*])|([^*]))*\**"*/" { reFound(&commts, COMMENT); nlines += findLineJumps(getSubstring(yytext,yyleng)); }
-":="                            { reFound(&assop, ASSIGMENT_OPERATION); }
-","|";"|"("|")"|"{"|"}"         { reFound(&puntok, PUNCTUATION_TOKEN); }
-"<"|"="|"<="|">="|"!="          { reFound(&reltok, RELATIONAL_TOKEN); }
-"+"|"-"|"*"|"/"                 { reFound(&arloop, ARITHMETIC_AND_LOGIC); }
-[1-9][0-9]*|0(c|C)[0-7]+|0(x|X)[0-9A-Fa-f]+|[+-]?[0-9]*"."[0-9]+([eE][-+]?[0-9]+)?  { reFound(&numbers, NUMBER); }
-[-+]?[0-9]*                     { reFound(&numbers, NUMBER); }                     
-[A-Za-z_][A-Za-z0-9_]*          { reFound(&ids, ID); }
+"int"|"float"                   { 
+        char * value = getSubstring(yytext, yyleng);
+        
+        if (strcmp(value,"int") == 0){
+            return INTEGER;
+        } else if (strcmp(value,"float") == 0){
+            return FLOAT;
+        }
+    }
+"if"|"then"|"else"|"while"      { 
+        char * value = getSubstring(yytext, yyleng);
+
+        if (strcmp(value,"if") == 0){
+            return IF;
+        } else if (strcmp(value,"then") == 0){
+            return THEN;
+        } else if (strcmp(value,"else") == 0){
+            return ELSE;
+        } else if (strcmp(value,"while") == 0){
+            return WHILE;
+        } 
+    }
+"read"|"write"                  {
+        char * value = getSubstring(yytext, yyleng);
+        
+        if (strcmp(value,"read") == 0){
+            return READ;
+        } else if (strcmp(value,"write") == 0){
+            return WRITE;
+        }
+     
+     }
+"/*"((\*+[^/*])|([^*]))*\**"*/" { 
+        reFound(&commts, COMMENT); nlines += findLineJumps(getSubstring(yytext,yyleng)); 
+    }
+":="                            { 
+        return ASSIGN;
+    }
+","|";"|"("|")"|"{"|"}"         { 
+        char * value = getSubstring(yytext, yyleng);
+        char cval = *value;
+
+        switch(cval){
+            case ';': return SEMI;
+            case '(': return LPAREN;
+            case ')': return RPAREN;
+            case '{': return LBRACE;
+            case '}': return RBRACE;
+        }
+    }
+"<"|"="|"<="|">="|"!="          { 
+        char * value = getSubstring(yytext, yyleng);
+        char cval = *value;
+
+        switch(cval){
+            case '<': return LT;
+            case '=': return EQ;
+        }
+    }
+"+"|"-"|"*"|"/"                 { 
+        char * value = getSubstring(yytext, yyleng);
+        char cval = *value;
+
+        switch(cval){
+            case '+': return PLUS;
+            case '-': return MINUS;
+            case '*': return TIMES;
+            case '/': return DIV;
+        } 
+    }
+[1-9][0-9]*|0(c|C)[0-7]+|0(x|X)[0-9A-Fa-f]+|[+-]?[0-9]*"."[0-9]+([eE][-+]?[0-9]+)?  { 
+        return FLOAT_NUM;
+    }
+[-+]?[0-9]*                     {
+        return INT_NUM;
+    }                     
+[A-Za-z_][A-Za-z0-9_]*          {
+        return ID; 
+    }
 [^ ]                            { errorFound(); }
 " "                             { /* Delete any white space */}
 %%
 
 /* This is the main program */
 
+/*
 int main(void) {
 
     printf("\n");
@@ -105,7 +176,7 @@ int main(void) {
     printf("Track of tokens | value | type |\n");
     printf("--------------------------------\n\n");
     
-    yylex(); /* Defined by flex */
+    yylex(); 
     
 
     printf("\n\nLexical analyzer results.\n");
@@ -121,3 +192,4 @@ int main(void) {
 
     return 0;
 }
+*/
