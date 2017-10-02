@@ -1,7 +1,12 @@
 /* This is the declaration section */
 %{
     #include <string.h>
+    /* References from bison (TOKENS) */
     #include "syntactic.tab.h"
+
+    /* Error handling variables to access with bison */
+    char * yytext;
+    int yylineno;
 
     char * RESERVED_WORD = "Reserved Word";
     char * COMMENT = "Comment";
@@ -76,10 +81,9 @@
     }
 
 %}
-
 /* This is the rule definition */
 %%
-\n                              { nlines++; }
+\n                              { yylineno++;nlines++; }
 "int"|"float"                   { 
         char * value = getSubstring(yytext, yyleng);
         
@@ -89,7 +93,7 @@
             return FLOAT;
         }
     }
-"if"|"then"|"else"|"while"      { 
+"if"|"then"|"else"|"while"|"do"      { 
         char * value = getSubstring(yytext, yyleng);
 
         if (strcmp(value,"if") == 0){
@@ -100,6 +104,8 @@
             return ELSE;
         } else if (strcmp(value,"while") == 0){
             return WHILE;
+        } else if (strcmp(value,"do") == 0){
+            return DO;
         } 
     }
 "read"|"write"                  {
@@ -113,7 +119,10 @@
      
      }
 "/*"((\*+[^/*])|([^*]))*\**"*/" { 
-        reFound(&commts, COMMENT); nlines += findLineJumps(getSubstring(yytext,yyleng)); 
+        /* Comments section*/
+        int plusline = findLineJumps(getSubstring(yytext,yyleng));
+        reFound(&commts, COMMENT); nlines += plusline;
+        yylineno += plusline; 
     }
 ":="                            { 
         return ASSIGN;

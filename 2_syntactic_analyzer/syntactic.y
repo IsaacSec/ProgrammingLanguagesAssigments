@@ -1,7 +1,9 @@
 %{
     #include <string.h>
     #include <stdio.h>
-
+    
+    int yylineno;
+    char * yytext;
     /* Function definitions */
     void yyerror (char *string);
 %}
@@ -31,9 +33,13 @@
 %token INT_NUM
 %token FLOAT_NUM
 
+/* This solves the dangling else problem */
+%nonassoc THEN
+%nonassoc ELSE
+/*  */
 %%
 
-program: var_dec stmt_seq
+program: var_dec stmt_seq   { printf ("No errors in the code\n");}
     ;
 
 var_dec: var_dec single_dec
@@ -51,16 +57,13 @@ stmt_seq: stmt_seq stmt
     |
     ;
 
-stmt: IF exp THEN stmt stmt_prime
+stmt: IF exp THEN stmt ELSE stmt
+    |   IF exp THEN stmt
     |   WHILE exp DO stmt
     |   variable ASSIGN exp SEMI
     |   READ LPAREN variable RPAREN SEMI
     |   WRITE LPAREN exp RPAREN SEMI
     |   block
-    ;
-    
-stmt_prime: ELSE stmt
-    |
     ;
 
 block: LBRACE stmt_seq RBRACE
@@ -93,8 +96,8 @@ variable: ID
 %%
 
 /* Bison does NOT implement yyerror, so define it here */
-void yyerror (char *string){
-  printf ("%s",string);
+void yyerror (char *msg){
+  printf("%d: %s near token '%s'\n", yylineno, msg, yytext);
 }
 
 /* Bison does NOT define the main entry point so define it here */
