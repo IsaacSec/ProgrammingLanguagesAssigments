@@ -1,5 +1,5 @@
 analyzer.o: lex.yy.c
-	gcc lex.yy.c node.c general_queue.c token.c error.c -o analyzer.o -lfl -m32 -Wall
+	gcc lex.yy.c -o analyzer.o -lfl -Wall
 lex.yy.c: analyzer.l
 	flex analyzer.l
 run: analyzer.o test01.c
