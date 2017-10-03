@@ -2,6 +2,11 @@
 
 **IMPORTANT:** If you are using MacOS, change the flag -lfl with -ll in the Makefile
 
+# Requirements
+ - gcc
+ - flex/lex
+ - bison
+
 ### Compile
 
 ```
