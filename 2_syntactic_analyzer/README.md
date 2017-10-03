@@ -1,4 +1,4 @@
-## Lexical Analyzer for tinyC
+## Syntactic Analyzer for tinyC
 
 **IMPORTANT:** If you are using MacOS, change the flag -lfl with -ll in the Makefile
 
@@ -13,6 +13,7 @@ make
 ```
 make run
 ```
+**note:** this will run test01.c by default
 
 ### Run
 
@@ -26,3 +27,6 @@ make run
 ```
 make clean
 ```
+
+## Licence
+MIT &copy; IsaacSecundino MartinRuiz
